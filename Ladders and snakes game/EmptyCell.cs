@@ -12,7 +12,7 @@ namespace Ladders_and_snakes_game
 
         protected override int GetIndex()
         {
-            return index;
+            return _index;
         }
     }
 }

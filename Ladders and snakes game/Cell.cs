@@ -8,10 +8,10 @@ namespace Ladders_and_snakes_game
 {
     internal abstract class Cell
     {
-        protected int index;
+        protected int _index;
         protected Cell(int index)
         {
-            this.index = index;
+            this._index = index;
         }
 
         protected abstract int GetIndex();
