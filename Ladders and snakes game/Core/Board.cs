@@ -8,12 +8,15 @@ namespace Ladders_and_snakes_game.Core
 {
     internal class Board
     {
-        private Cell[] _cells;
+        private int _rows = 0;
+        private int _cols = 0;
 
         private int _boardSize = 0;
 
-        private int _rows = 0;
-        private int _cols = 0;
+        private Cell[] _cells;
+
+        private readonly List<SnakeLink> _snakes = new List<SnakeLink>();
+        //private readonly List<LadderLink> _ladders = new List<LadderLink>();
 
         public Board(int rows , int cols)
         {
@@ -50,6 +53,11 @@ namespace Ladders_and_snakes_game.Core
         public int GetBoardSize()
         {
             return _boardSize;
+        }
+
+        public List<SnakeLink> GetSnakes()
+        {
+            return _snakes;
         }
     }
 }

@@ -8,7 +8,10 @@ namespace Ladders_and_snakes_game
 {
     internal class Program
     {
-        private UserInterface game = new UserInterface();
-        game.StratGame();
+        public static void Main()
+        {
+            //private UserInterface game = new UserInterface();
+            //game.StratGame();
+        }
     }
 }

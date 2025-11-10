@@ -9,6 +9,7 @@ namespace Ladders_and_snakes_game.GameLogic
 {
     internal class Dice
     {
+        public Dice() { }
         public int RollTheDice()
         {
             // real return value between 1 and 6 

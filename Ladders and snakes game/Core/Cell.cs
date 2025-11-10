@@ -14,6 +14,9 @@ namespace Ladders_and_snakes_game.Core
             this._index = index;
         }
 
-        public abstract int GetIndex();
+        //public abstract int GetIndex();
+
+        // add abstract method to be implemented by derived classes
+        //protected abstract int OnLand();
     }
 }

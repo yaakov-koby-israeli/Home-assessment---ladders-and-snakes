@@ -13,28 +13,49 @@ namespace Ladders_and_snakes_game.Factory
         private int SnakesNumber { get; }
         private int LaddersNumber { get; }
         
-
         public CellsFactory(int snakesNumber , int laddersNumber)
         {
             SnakesNumber = snakesNumber;
             LaddersNumber = laddersNumber;
         }
 
+        public void InitEmptyCells(ref Board gameBoard)
+        {
+            Cell[] cells = gameBoard.GetCells();
+
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (cells[i] == null)
+                {
+                    cells[i] = new EmptyCell(i);
+                }
+            }
+        }
+
         public void InitSnakes(ref Board gameBoard)
         {
+            for (int i = 0; i <= SnakesNumber; i++)
+            {
+                int randomSnakeHeadPosition = GetRandomIndexForSnakeHead(ref gameBoard);
 
-            int randomSnakeHeadPosition = GetRandomIndexForSnakeHead(ref gameBoard);
+                //create snake head cell
+                TopOrBottomCell snakeHead = new TopOrBottomCell(randomSnakeHeadPosition, enumCellType.SnakeHead);
 
-            //create snake head cell
-            Cell snakeHead = new TopOrBottomCell(randomSnakeHeadPosition, enumCellType.SnakeHead);
+                // assign snake head to the random position in the board
+                gameBoard.GetCells()[randomSnakeHeadPosition] = snakeHead;
 
-            // assign snake head to the random position in the board
-            gameBoard.GetCells()[randomSnakeHeadPosition] = snakeHead;
+                // create snake tail cell 
+                int randomSnakeTailPosition = GetRandomIndexForTailPosition(ref gameBoard, snakeHead.GetIndex());
+                TopOrBottomCell snakeTail = new TopOrBottomCell(randomSnakeTailPosition, enumCellType.SnakeTail);
 
-            // create snake tail cell 
-            int randomSnakeTailPosition = GetRandomIndexForTailPosition(ref gameBoard , snakeHead.GetIndex() );
+                // assign snake tail to the random position in the board
+                gameBoard.GetCells()[randomSnakeTailPosition] = snakeTail;
 
+                SnakeLink newSnake = new SnakeLink(snakeHead, snakeTail);
 
+                // add the new snake to the board snakes list
+                gameBoard.GetSnakes().Add(newSnake);
+            }
         }
 
         private int GetRandomIndexForSnakeHead(ref Board gameBoard)
@@ -87,5 +108,7 @@ namespace Ladders_and_snakes_game.Factory
 
             return maxTailIndex;
         }
+
+        
     }
 }

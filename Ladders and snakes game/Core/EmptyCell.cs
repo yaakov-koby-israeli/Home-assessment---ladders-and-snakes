@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ladders_and_snakes_game.Players;
 
 namespace Ladders_and_snakes_game.Core
 {
@@ -10,9 +11,14 @@ namespace Ladders_and_snakes_game.Core
     {
         public EmptyCell(int index): base(index) { }
 
-        public override int GetIndex()
+        public int GetIndex()
         {
             return _index;
         }
+
+        //protected override int OnLand()
+        //{
+        //    return _index;
+        //}
     }
 }
