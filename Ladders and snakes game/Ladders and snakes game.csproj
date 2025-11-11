@@ -40,6 +40,8 @@
     <Compile Include="Core\Board.cs" />
     <Compile Include="Factory\CellsFactory.cs" />
     <Compile Include="Core\Cell.cs" />
+    <Compile Include="Front\UserInputValidation.cs" />
+    <Compile Include="Front\UserInterface.cs" />
     <Compile Include="Game Logic\Dice.cs" />
     <Compile Include="Core\EmptyCell.cs" />
     <Compile Include="Core\EnumCellType.cs" />

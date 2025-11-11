@@ -34,7 +34,7 @@ namespace Ladders_and_snakes_game.Factory
 
         public void InitSnakes(ref Board gameBoard)
         {
-            for (int i = 0; i <= SnakesNumber; i++)
+            for (int i = 0; i < SnakesNumber; i++)
             {
                 int randomSnakeHeadPosition = GetRandomIndexForSnakeHead(ref gameBoard);
 
@@ -60,8 +60,10 @@ namespace Ladders_and_snakes_game.Factory
 
         private int GetRandomIndexForSnakeHead(ref Board gameBoard)
         {
+            // todo CHANGED: avoid first row by using number of COLUMNS, not rows but why? 
+
             // to avoid placing snake head in first row example: 10*10 board , snake head min number = 11
-            int snakeHeadMinNumber = gameBoard.GetRowsNumber() + 1;
+            int snakeHeadMinNumber = gameBoard.GetColsNumber() + 1;
 
             // to avoid placing snake head in last cell
             int snakeHeadMaxNumber = gameBoard.GetBoardSize() - 1;
@@ -90,7 +92,7 @@ namespace Ladders_and_snakes_game.Factory
 
             do
             {                                                    // 1 to last index in allowed row
-                randomIndex = RandomProvider.Instance.Next(snakeTailMinPosition, snakeTailMaxPosition); // exclusive upper bound
+                randomIndex = RandomProvider.Instance.Next(snakeTailMinPosition, snakeTailMaxPosition + 1); // to include upper bound
             }
             while (gameBoard.GetCells()[randomIndex] != null);
 
@@ -100,7 +102,9 @@ namespace Ladders_and_snakes_game.Factory
 
         private int CalculateMaxTailPosition(ref Board gameBoard,int currentSnakeHeadPosition)
         {
-            int rowSize = gameBoard.GetRowsNumber();            // square board => cols == rows
+            // todo why get cols size and not rows size ?
+
+            int rowSize = gameBoard.GetColsNumber();            // square board => cols == rows
 
             int headRow = (currentSnakeHeadPosition - 1) / rowSize + 1;            // 1-based row
 

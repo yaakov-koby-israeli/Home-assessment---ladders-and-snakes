@@ -13,8 +13,8 @@ namespace Ladders_and_snakes_game.Game_Logic
     internal class GameManager
     {
         // TODO HOW CAN BE MORE GENERIC ?
-        private readonly int _maxSnakesNumber = 12;
-        private readonly int _maxLaddersNumber = 12;
+        //private readonly int _maxSnakesNumber = 15;
+        //private readonly int _maxLaddersNumber = 15;
         private readonly int _playersNumber = 2;
 
         private readonly List<IPlayer> _playersList = new List<IPlayer>();
@@ -25,9 +25,12 @@ namespace Ladders_and_snakes_game.Game_Logic
 
         private Dice DiceOne { get; } = new Dice();
 
-        private Dice DiceTow { get; } = new Dice();
+        private Dice DiceTwo { get; } = new Dice();
 
-        public GameManager() { }
+        public GameManager(int amountOfPlayers)
+        {
+            _playersNumber = amountOfPlayers;
+        }
 
         public void InitPlayers() 
         {
@@ -53,13 +56,13 @@ namespace Ladders_and_snakes_game.Game_Logic
 
             // TODO init ladders here !!!
 
-            _cellsFactory.InitEmptyCells(ref _gameBoard);
+            _cellsFactory.InitEmptyCells(ref _gameBoard); 
         }
 
         // return sum of dices
         public int RollDices()
         {
-            return DiceOne.RollTheDice() + DiceTow.RollTheDice();
+            return DiceOne.RollTheDice() + DiceTwo.RollTheDice();
         }
 
         public void TurnManager()
@@ -81,6 +84,13 @@ namespace Ladders_and_snakes_game.Game_Logic
             int diceResult = RollDices();
             player.MovePlayer(diceResult);
 
+            // todo delegate and event driven for Game Over method !!!
+            // check if player reached or exceeded position 100
+            if (GameOver())
+            {
+                // todo need raise an event to finish the game !!!
+            }
+
             CheckIfSpecialCellType( player);
         }
 
@@ -90,9 +100,9 @@ namespace Ladders_and_snakes_game.Game_Logic
             switch (currentCellType)
             {
                 case enumCellType.SnakeHead:
-                    // TODO handle snake head logic
                     FindSnakeTailAndMovePlayerDown( currentPlayer);
                     break;
+
                 case enumCellType.LadderHead:
                     // TODO handle ladder head logic
                     break;
@@ -110,7 +120,8 @@ namespace Ladders_and_snakes_game.Game_Logic
 
             if (snake != null)
             {
-                currentPlayer.Position = snake.GetTailCell().GetIndex();
+                //currentPlayer.Position = snake.GetTailCell().GetIndex();
+                snake.MovePlayerDown(currentPlayer);
             }
         }
 
@@ -118,12 +129,14 @@ namespace Ladders_and_snakes_game.Game_Logic
         private bool GameOver()
         {
             bool isGameOver = false;
+            int lastIndex = _gameBoard.GetBoardSize();
 
             foreach (IPlayer player in _playersList)
             {
-                if(player.Position>=100)
+                if(player.Position >= lastIndex)
                 {
                     isGameOver = true;
+                    player.HasWon = true;
                     break;
                 }
             }
