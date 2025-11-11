@@ -16,7 +16,8 @@ namespace Ladders_and_snakes_game.Front
         
         public void StartGame()
         {
-            GetParamsForSnakeAndLadders();
+           // GetParamsForSnakeAndLadders();
+            PrintBoard(GameSettings.Rows, GameSettings.Cols);
         }
 
         private void GetParamsForSnakeAndLadders()
@@ -58,6 +59,59 @@ namespace Ladders_and_snakes_game.Front
         {
             _gameManager = new GameManager(GameSettings.Players,
                 GameSettings.Rows, GameSettings.Cols, GameSettings.Snakes, GameSettings.Ladders);
+        }
+
+        private void PrintBoard(int rows , int cols)
+        {
+            int cellWidth = 6; // adjust for wider cells
+
+            // top border
+            DrawBorder(cols, cellWidth);
+
+            // We print from visual TOP row to BOTTOM row,
+            // but compute numbers as if indexing rows from the BOTTOM.
+            for (int k = 0; k < rows; k++)
+            {
+                int bottomRowIndex = rows - 1 - k;           // 0 = bottom row
+                int rowStart = bottomRowIndex * cols + 1;     // first number in that row
+
+                bool leftToRight = (bottomRowIndex % 2 == 0); // even rows from bottom go L->R
+
+                if (leftToRight)
+                {
+                    for (int c = 0; c < cols; c++)
+                    {
+                        int value = rowStart + c;
+                        Console.Write("|" + Center(value.ToString(), cellWidth));
+                    }
+                }
+                else
+                {
+                    for (int c = cols - 1; c >= 0; c--)
+                    {
+                        int value = rowStart + c;
+                        Console.Write("|" + Center(value.ToString(), cellWidth));
+                    }
+                }
+                Console.WriteLine("|");
+
+                // border after the row
+                DrawBorder(cols, cellWidth);
+            }
+        }
+
+        static void DrawBorder(int cols, int cellWidth)
+        {
+            for (int c = 0; c < cols; c++)
+                Console.Write("+" + new string('-', cellWidth));
+            Console.WriteLine("+");
+        }
+
+        static string Center(string text, int width)
+        {
+            int padding = width - text.Length;
+            int padLeft = text.Length + padding / 2;
+            return text.PadLeft(padLeft).PadRight(width);
         }
 
     }
