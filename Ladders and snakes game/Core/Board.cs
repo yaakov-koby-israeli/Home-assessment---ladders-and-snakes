@@ -8,8 +8,8 @@ namespace Ladders_and_snakes_game.Core
 {
     internal class Board
     {
-        private int _rows = 0;
-        private int _cols = 0;
+        private readonly int _rows = 0;
+        private readonly int _cols = 0;
 
         private int _boardSize = 0;
 
