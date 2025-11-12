@@ -19,6 +19,9 @@ namespace Ladders_and_snakes_game.Factory
             LaddersNumber = laddersNumber;
         }
 
+        // TODO init Gold cells here !!!
+
+        // Initialize Empty Cells
         public void InitEmptyCells(ref Board gameBoard)
         {
             Cell[] cells = gameBoard.GetCells();
@@ -32,6 +35,7 @@ namespace Ladders_and_snakes_game.Factory
             }
         }
 
+        // Initialize Snakes chain
         public void InitSnakes(ref Board gameBoard)
         {
             for (int i = 0; i < SnakesNumber; i++)
@@ -113,6 +117,86 @@ namespace Ladders_and_snakes_game.Factory
             return maxTailIndex;
         }
 
-        
+        // Initialize Ladders chain
+
+        public void InitLadders(ref Board gameBoard)
+        {
+            for (int i = 0; i < LaddersNumber; i++)
+            {
+                int randomLaddersBottomPosition = GetRandomIndexForLadderBottom(ref gameBoard);
+
+                // create ladder bottom cell
+                TopOrBottomCell ladderBottom = new TopOrBottomCell(randomLaddersBottomPosition, enumCellType.LadderBottom);
+
+                // assign ladder bottom to the random position in the board
+                gameBoard.GetCells()[randomLaddersBottomPosition] = ladderBottom;
+
+                // create ladder top cell 
+                int randomLadderTopPosition = GetRandomIndexForLadderTopPosition(ref gameBoard, ladderBottom.GetIndex());
+                TopOrBottomCell ladderTop = new TopOrBottomCell(randomLadderTopPosition, enumCellType.LadderTop);
+
+                // assign ladder top to the random position in the board
+                gameBoard.GetCells()[randomLadderTopPosition] = ladderTop;
+
+                LadderLink newLadder = new LadderLink(ladderBottom, ladderTop);
+
+                // add the new snake to the snakes list
+                gameBoard.GetLadderList().Add(newLadder);
+            }
+        }
+
+        private int GetRandomIndexForLadderBottom(ref Board gameBoard)
+        {
+            int cols = gameBoard.GetColsNumber();
+            int lastPlayable = gameBoard.GetBoardSize() - 1;
+
+            int ladderBottomMinNumber = 1;
+            int ladderBottomMaxNumber = lastPlayable - cols;
+            
+            int randomIndex;
+
+            // ensure that the random index is not already occupied
+            do
+            {                                                    // 1        to        90
+                randomIndex = RandomProvider.Instance.Next(ladderBottomMinNumber, ladderBottomMaxNumber +1 ); // inclusive upper bound
+            }
+            while (gameBoard.GetCells()[randomIndex] != null);
+
+            return randomIndex;
+        }
+
+        private int GetRandomIndexForLadderTopPosition(ref Board gameBoard, int currentLadderBottomPosition)
+        {
+            int ladderTopMaxPosition = gameBoard.GetBoardSize()-1;
+
+            int ladderTopMinPosition = CalculateMinLadderPosition(ref gameBoard, currentLadderBottomPosition);
+
+            int randomIndex;
+
+            // TODO What if there is no valid position for the tail ?
+
+            do
+            {                                                    
+                randomIndex = RandomProvider.Instance.Next(ladderTopMinPosition, ladderTopMaxPosition); // exclusive last cell
+            }
+            while (gameBoard.GetCells()[randomIndex] != null);
+
+            return randomIndex;
+        }
+        private int CalculateMinLadderPosition(ref Board gameBoard, int currentLadderBottomPosition)
+        {
+            // todo why get cols size and not rows size ?
+
+            int cols = gameBoard.GetColsNumber();
+
+            int currentRow = (currentLadderBottomPosition - 1) / cols;        // 0-based current row
+            int nextRowStart = (currentRow + 1) * cols + 1;         // first index of next row
+
+            // clamp to last playable just in case
+            int lastPlayable = gameBoard.GetBoardSize() - 1;
+            if (nextRowStart > lastPlayable) nextRowStart = lastPlayable;
+
+            return nextRowStart;
+        }
     }
 }
