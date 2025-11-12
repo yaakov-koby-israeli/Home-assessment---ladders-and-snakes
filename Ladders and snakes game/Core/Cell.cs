@@ -17,10 +17,5 @@ namespace Ladders_and_snakes_game.Core
             _cellType = cellType;
         }
         public abstract enumCellType GetCellType();
-
-        //public abstract int GetIndex();
-
-        // add abstract method to be implemented by derived classes
-        //protected abstract int OnLand();
     }
 }
