@@ -16,7 +16,7 @@ namespace Ladders_and_snakes_game.Core
         private Cell[] _cells;
 
         private readonly List<SnakeLink> _snakesList = new List<SnakeLink>();
-        //private readonly List<LadderLink> _ladders = new List<LadderLink>();
+        private readonly List<LadderLink> _laddersList = new List<LadderLink>();
 
         public Board(int rows , int cols)
         {
@@ -28,7 +28,6 @@ namespace Ladders_and_snakes_game.Core
             _cells = new Cell[_boardSize];
         }
 
-        // create setBoardSize method for future validation if needed
         private void SetBoardSize(int boardSize)
         {
             // +1 because all players starts from index 0;
@@ -58,6 +57,10 @@ namespace Ladders_and_snakes_game.Core
         public List<SnakeLink> GetSnakesList()
         {
             return _snakesList;
+        }
+        public List<LadderLink> GetLadderList()
+        {
+            return _laddersList;
         }
     }
 }
