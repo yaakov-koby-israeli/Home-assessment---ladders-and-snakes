@@ -7,7 +7,7 @@ using Ladders_and_snakes_game.Utilities;
 
 namespace Ladders_and_snakes_game.Game_Logic
 {
-    internal class Dice
+    internal sealed class Dice
     {
         public Dice() { }
         public int RollTheDice()
