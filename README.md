@@ -69,13 +69,8 @@ The player can choose:
 - Press **Y** → restart the game  
 - Press any other key → exit  
 
+## 🎉 End of Game
 ---
 
-## 🎉 End of Game
-The game ends gracefully with:
-<img width="183" height="33" alt="Screenshot 2025-11-13 193809" src="https://github.com/user-attachments/assets/0391bcc4-ede2-41df-8f4c-3fbe68eeb411" />
-
-
-**“Thanks for playing!”**
 
 This concludes a full gameplay cycle.
