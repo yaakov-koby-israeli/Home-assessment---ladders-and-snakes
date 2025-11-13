@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Ladders_and_snakes_game.Configuration;
 using Ladders_and_snakes_game.Game_Logic;
@@ -14,15 +15,24 @@ namespace Ladders_and_snakes_game.Front
     {
         // TODO MAYBE USE DI OR singleton
         private GameManager _gameManager = null;
+        private bool _isGameOver = false;
 
         public void StartGame()
         {
-            GetParamsForSnakeAndLadders();
-            PrintBoard(GameSettings.Rows, GameSettings.Cols);
-            SubscribeToEvents();
+            while (!_isGameOver)
+            {
+                GetParamsForSnakeAndLadders();
 
-            _gameManager.TurnManager();
+                InitComponents();
 
+                PrintBoard(GameSettings.Rows, GameSettings.Cols);
+
+                SubscribeToEvents();
+                
+                _gameManager.TurnManager();
+
+                HandleRestartOrExit();
+            }
         }
 
         private void GetParamsForSnakeAndLadders()
@@ -56,8 +66,6 @@ namespace Ladders_and_snakes_game.Front
             //Convert to int before passing to InitComponents
             GameSettings.Snakes = int.Parse(snakesInput);
             GameSettings.Ladders = int.Parse(laddersInput);
-
-            InitComponents();
         }
 
         private void InitComponents()
@@ -71,9 +79,15 @@ namespace Ladders_and_snakes_game.Front
             _gameManager.OnGameOver += OnGameOverHandler;
             _gameManager.OnTurnStarted += OnTurnStartedHandler;
             _gameManager.OnRollDice += OnRollDiceHandler;
+            _gameManager.OnTurnFinished += OnTurnFinishedHandler;
+        }
 
-            // _gameManager.OnTurnFinished += PrintBoard(GameSettings.Rows, GameSettings.Cols);
-            _gameManager.OnTurnFinished += () => PrintBoard(GameSettings.Rows, GameSettings.Cols);
+        private void UnsubscribeToEvents()
+        {
+            _gameManager.OnGameOver -= OnGameOverHandler;
+            _gameManager.OnTurnStarted -= OnTurnStartedHandler;
+            _gameManager.OnRollDice -= OnRollDiceHandler;
+            _gameManager.OnTurnFinished -= OnTurnFinishedHandler;
         }
 
         private void OnRollDiceHandler(int sumOfDice)
@@ -92,7 +106,7 @@ namespace Ladders_and_snakes_game.Front
             ConsoleKey key;
             do
             {
-                key = Console.ReadKey(intercept: true).Key; // intercept=true hides the key from console
+                key = Console.ReadKey(intercept: true).Key; // intercept = true hides the key from console
                 if (key != ConsoleKey.Spacebar)
                 {
                     Console.WriteLine("Please press SPACE to roll the dice.");
@@ -103,23 +117,41 @@ namespace Ladders_and_snakes_game.Front
 
         private void OnGameOverHandler(int id)
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("Game Over!");
             Console.WriteLine($"Congrats ! player {id} Won ! \n");
-            Console.WriteLine("Would you like to play again? (y/n)");
+            Console.WriteLine("Press any other key to continue.");
+            Console.ReadKey(intercept: true);
+        }
 
-            string choice = Console.ReadLine()?.Trim().ToLower();
+        private void HandleRestartOrExit()
+        {
+            Console.Clear();
+            Console.WriteLine("Would you like to play again?");
+            Console.WriteLine("Press Y to restart.");
+            Console.WriteLine("Press any other key to exit.");
 
-            if (choice == "y")
+            // Read one key without showing it
+            ConsoleKey key = Console.ReadKey(intercept: true).Key;
+
+            if (key == ConsoleKey.Y)
             {
                 Console.Clear();
-                StartGame();  
+                UnsubscribeToEvents();   // reset events before starting again
+                // game will restart on next loop
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Thanks for playing!");
-                Environment.Exit(0);  
+                _isGameOver = true;      // exit the entire game
             }
+        }
+
+        // func wraps PrintBoard function in order to activate it from delegate (delegate inside GameManager Class)
+        private void OnTurnFinishedHandler()
+        {
+            PrintBoard(GameSettings.Rows, GameSettings.Cols);
         }
 
         // Next Three functions for printing the board in console
@@ -145,7 +177,6 @@ namespace Ladders_and_snakes_game.Front
                     for (int c = 0; c < cols; c++)
                     {
                         int value = rowStart + c;
-                        //Console.Write("|" + Center(value.ToString(), cellWidth));
                         Console.Write("|" + Center(_gameManager.GetUiToken(value), cellWidth));
                     }
                 }
@@ -154,7 +185,6 @@ namespace Ladders_and_snakes_game.Front
                     for (int c = cols - 1; c >= 0; c--)
                     {
                         int value = rowStart + c;
-                        //Console.Write("|" + Center(value.ToString(), cellWidth));
                         Console.Write("|" + Center(_gameManager.GetUiToken(value), cellWidth));
                     }
                 }
@@ -178,7 +208,5 @@ namespace Ladders_and_snakes_game.Front
             int padLeft = text.Length + padding / 2;
             return text.PadLeft(padLeft).PadRight(width);
         }
-
-        
     }
 }
