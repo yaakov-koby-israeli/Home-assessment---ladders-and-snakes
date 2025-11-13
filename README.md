@@ -55,7 +55,6 @@ Ladders_and_snakes_game/
 └── Configuration/
     └── GameSettings.cs
 ```
----
 
 ## 📸 Gameplay Screenshots (Step-by-Step)
 
