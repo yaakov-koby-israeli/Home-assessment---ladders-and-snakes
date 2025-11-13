@@ -11,9 +11,8 @@ using Ladders_and_snakes_game.Players;
 
 namespace Ladders_and_snakes_game.Front
 {
-    internal class UserInterface
+    internal sealed class UserInterface
     {
-        // TODO MAYBE USE DI OR singleton
         private GameManager _gameManager = null;
         private bool _isGameOver = false;
 
@@ -41,7 +40,7 @@ namespace Ladders_and_snakes_game.Front
             Console.Write("Enter number of snakes: ");
             var snakesInput = Console.ReadLine();
 
-            while (!UserInputValidation.SnakesInputValidation(ref snakesInput))
+            while (!UserInputValidation.InputValidation(snakesInput, GameSettings.MaxSnakes))
             {
                 Console.Clear();
                 Console.WriteLine("Snakes And Ladders\n");
@@ -54,7 +53,7 @@ namespace Ladders_and_snakes_game.Front
             Console.Write("Enter number of Ladders: ");
             var laddersInput = Console.ReadLine();
 
-            while (!UserInputValidation.LaddersInputValidation(ref laddersInput))
+            while (!UserInputValidation.InputValidation(laddersInput, GameSettings.MaxLadders))
             {
                 Console.Clear();
                 Console.WriteLine("Snakes And Ladders\n");
@@ -63,7 +62,7 @@ namespace Ladders_and_snakes_game.Front
             }
             Console.Clear();
 
-            //Convert to int before passing to InitComponents
+            //Convert to int  
             GameSettings.Snakes = int.Parse(snakesInput);
             GameSettings.Ladders = int.Parse(laddersInput);
         }
@@ -117,7 +116,6 @@ namespace Ladders_and_snakes_game.Front
 
         private void OnGameOverHandler(int id)
         {
-            //Console.Clear();
             Console.WriteLine("Game Over!");
             Console.WriteLine($"Congrats ! player {id} Won ! \n");
             Console.WriteLine("Press any other key to continue.");
