@@ -7,33 +7,18 @@ using System.Threading.Tasks;
 
 namespace Ladders_and_snakes_game.Front
 {
-    internal class UserInputValidation
+    internal sealed class UserInputValidation
     {
-        public static bool SnakesInputValidation(ref string snakesNumber)
+        public static bool InputValidation(string userInput , int maxValue)
         {
             bool isValid = true;
 
-            if (!int.TryParse(snakesNumber, out int snakes))
-            {
-                isValid = false;
-            }
-            if (snakes < 1 || snakes > Configuration.GameSettings.MaxSnakes)
+            if (!int.TryParse(userInput, out int userInputAsNumber))
             {
                 isValid = false;
             }
 
-            return isValid;
-        }
-
-        public static bool LaddersInputValidation(ref string laddersNumber)
-        {
-            bool isValid = true;
-
-            if (!int.TryParse(laddersNumber, out int ladders))
-            {
-                isValid = false;
-            }
-            if (ladders < 1 || ladders > Configuration.GameSettings.MaxLadders)
+            if (userInputAsNumber < 1 || userInputAsNumber > maxValue)
             {
                 isValid = false;
             }
