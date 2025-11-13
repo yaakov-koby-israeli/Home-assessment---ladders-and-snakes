@@ -101,14 +101,15 @@ namespace Ladders_and_snakes_game.Front
             _gameManager.OnTurnFinished -= OnTurnFinishedHandler;
         }
 
-        private void OnRollDiceHandler(int sumOfDice)
+        private void OnRollDiceHandler(int sumOfDice, int currentPlayerId, int prevPos, int currentPlayerPosition)
         {
+            Console.WriteLine($"Player {currentPlayerId }\nMove: {prevPos}->{currentPlayerPosition}");
             Console.WriteLine($"Dice: {sumOfDice}");
         }
 
         private void OnTurnStartedHandler(int playerNumber)
         {
-            Console.WriteLine($"player {playerNumber} Press Space To Make your turn\n");
+            Console.WriteLine($"\nplayer {playerNumber} Press Space To Make your turn\n");
             WaitForSpaceKey();
         }
 
@@ -154,7 +155,9 @@ namespace Ladders_and_snakes_game.Front
             {
                 Console.Clear();
                 Console.WriteLine("Thanks for playing!");
-                _isGameOver = true;      // exit the entire game
+
+                // exit the entire game
+                _isGameOver = true;      
             }
         }
 
