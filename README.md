@@ -89,7 +89,8 @@ The board is generated randomly:
 - `G`  = Gold Cell  
 - `P1`, `P2` = Player positions  
 
-<img width="943" height="596" alt="Screenshot 2025-11-13 203807" src="https://github.com/user-attachments/assets/e4fe964a-26b8-477e-996a-5ab383b0212d" />
+<img width="731" height="486" alt="Screenshot 2025-11-13 203946" src="https://github.com/user-attachments/assets/d9024192-14b3-4926-aefb-254a35a75d7f" />
+
 Player 1 rolls the dice and the game starts.
 
 ---
