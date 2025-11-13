@@ -13,9 +13,6 @@ namespace Ladders_and_snakes_game.Game_Logic
 {
     internal class GameManager
     {
-        // TODO HOW CAN BE MORE GENERIC ?
-        //private readonly int _maxSnakesNumber = 15;
-        //private readonly int _maxLaddersNumber = 15;
         private readonly int _playersNumber;
         private int _leadPlayerId = 1;
         private int _diceRes = 0;
@@ -47,6 +44,8 @@ namespace Ladders_and_snakes_game.Game_Logic
             _playersNumber = amountOfPlayers;
 
             InitPlayers();
+            // TODO: wrap in loop and raise exception from InitCells. If failed after N attempts
+            // rethrow the exception so it will be caught and printed by the UI - or just re-init
             InitBoard(rows,cols);
             InitCells(snakesAmount, laddersAmount);
         }
@@ -91,32 +90,30 @@ namespace Ladders_and_snakes_game.Game_Logic
         {
             int index = 0;
 
-            while (! isGameOver)
+            while (true)
             {
                 var currentPlayer = _playersList[index];
                 OnTurnStarted?.Invoke(currentPlayer.Id);
 
-                PlayerOnTurn(currentPlayer);
+                _diceRes = RollDices();
+
+                currentPlayer.MovePlayer(_diceRes);
+
+                CheckIfSpecialCellType(currentPlayer);
 
                 UpdateLeaderId();
 
                 OnTurnFinished?.Invoke(); // printing updated board in ui
-                OnRollDice?.Invoke(_diceRes); // print dice result in ui
+                OnRollDice?.Invoke(_diceRes); // printing dice result in ui
+                
+                if (IsGameOver())
+                {
+                    break;
+                }
 
                 // move to next player
                 index = (index + 1) % _playersList.Count; // when it reaches end, go back to 0
             }
-        }
-
-        private void PlayerOnTurn(IPlayer player)
-        {
-            _diceRes = RollDices();
-
-            player.MovePlayer(_diceRes);
-
-            CheckIfGameOver();
-
-            CheckIfSpecialCellType(player);
         }
 
         private void CheckIfSpecialCellType(IPlayer currentPlayer)
@@ -158,10 +155,9 @@ namespace Ladders_and_snakes_game.Game_Logic
 
         private void FindLadderTopAndMovePlayerUp(IPlayer currentPlayer)
         {
-            // TODO LEARN THIS CODE !!! LINQ !!!
             // Find the ladder whose BOTTOM is at the player's current index
             var ladder = _gameBoard.GetLadderList()
-                .FirstOrDefault(l => l.GetTopCell() == _gameBoard.GetCells()[currentPlayer.Position]);
+                .FirstOrDefault(l => l.GetBottomCell() == _gameBoard.GetCells()[currentPlayer.Position]);
 
             if (ladder != null)
             {
@@ -192,23 +188,22 @@ namespace Ladders_and_snakes_game.Game_Logic
         }
 
         // func checks if any player position reached or exceeded Max position 
-        private bool CheckIfGameOver()
+        private bool IsGameOver()
         {
-            bool isGameOver = false;
-            int lastIndex = _gameBoard.GetBoardSize()-1; // we add one to real size because index starts from 0
-
+            int lastIndex = _gameBoard.GetBoardSize() - 1; // added one to real size because index starts from 0
+            
             foreach (IPlayer player in _playersList)
             {
                 if(player.Position >= lastIndex)
                 {
-                    isGameOver = true;
                     player.HasWon = true;
                     OnGameOver?.Invoke(player.Id);
-                    break;
+                    return true;
                 }
             }
-            return isGameOver;
+            return false;
         }
+
         public string GetUiToken(int index)
         {
             var p = _playersList.FirstOrDefault(pl => pl.Position == index);
