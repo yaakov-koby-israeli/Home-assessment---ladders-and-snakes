@@ -7,11 +7,11 @@ using Ladders_and_snakes_game.Configuration;
 
 namespace Ladders_and_snakes_game.Players
 {
-    internal class Player : IPlayer
+    internal sealed class Player : IPlayer
     {
         private static int _initID = 1;
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
         // All players start at position 0
         public int Position { get; set; } = 0;
@@ -35,7 +35,6 @@ namespace Ladders_and_snakes_game.Players
             }
             else
             {
-                
                 Position = newPosition;
             }
         }
