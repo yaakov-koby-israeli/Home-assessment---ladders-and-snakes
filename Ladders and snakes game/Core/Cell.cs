@@ -16,6 +16,8 @@ namespace Ladders_and_snakes_game.Core
             this._index = index;
             _cellType = cellType;
         }
-        public abstract enumCellType GetCellType();
+        
+        public virtual enumCellType GetCellType() => _cellType;
+        public virtual int GetIndex() => _index;
     }
 }
