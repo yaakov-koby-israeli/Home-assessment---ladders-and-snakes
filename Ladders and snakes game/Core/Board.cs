@@ -39,11 +39,6 @@ namespace Ladders_and_snakes_game.Core
             return _cells;
         }
 
-        public int GetRowsNumber()
-        {
-            return _rows;
-        }
-
         public int GetColsNumber()
         {
             return _cols;
@@ -58,6 +53,7 @@ namespace Ladders_and_snakes_game.Core
         {
             return _snakesList;
         }
+
         public List<LadderLink> GetLadderList()
         {
             return _laddersList;

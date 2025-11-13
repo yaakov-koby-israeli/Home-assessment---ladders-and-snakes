@@ -38,7 +38,7 @@ namespace Ladders_and_snakes_game.Factory
         public void InitGoldCells(Board gameBoard)
         {
             int max = gameBoard.GetBoardSize() - 1 ;
-            int min = 1;
+            int min = 2;
 
             for (int i = 0; i < GameSettings.MaxGold; i++)
             {
@@ -110,7 +110,7 @@ namespace Ladders_and_snakes_game.Factory
 
         private int GetRandomIndexForTailPosition(Board gameBoard , int currentSnakeHeadPosition)
         {
-            int snakeTailMinPosition = 1;
+            int snakeTailMinPosition = 2;
 
             int snakeTailMaxPosition = CalculateMaxTailPosition( gameBoard , currentSnakeHeadPosition);
 
@@ -121,7 +121,7 @@ namespace Ladders_and_snakes_game.Factory
             int attempts = 0;
 
             do
-            {                                                    // 1 to last index in allowed row
+            {                                                    // 2 to last index in allowed row
                 randomIndex = RandomProvider.Instance.Next(snakeTailMinPosition, snakeTailMaxPosition + 1); // to include upper bound
 
                 if (attempts++ >= maxAttempts)
@@ -179,14 +179,14 @@ namespace Ladders_and_snakes_game.Factory
             int cols = gameBoard.GetColsNumber();
             int lastPlayable = gameBoard.GetBoardSize() - 1;
 
-            int ladderBottomMinNumber = 1;
+            int ladderBottomMinNumber = 2;
             int ladderBottomMaxNumber = lastPlayable - cols;
             
             int randomIndex;
 
             // ensure that the random index is not already occupied
             do
-            {                                                    // 1        to        90
+            {                                                    // 2        to        90
                 randomIndex = RandomProvider.Instance.Next(ladderBottomMinNumber, ladderBottomMaxNumber +1 ); // inclusive upper bound
             }
             while (gameBoard.GetCells()[randomIndex] != null);

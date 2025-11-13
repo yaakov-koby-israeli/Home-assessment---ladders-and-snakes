@@ -22,12 +22,7 @@ namespace Ladders_and_snakes_game.Core
         {
             return _headCell;
         }
-
-        public TopOrBottomCell GetTailCell()
-        {
-            return _tailCell;
-        }
-
+        
         public void MovePlayerDown(IPlayer player)
         {
             player.Position = _tailCell.GetIndex();
