@@ -1,3 +1,60 @@
+# 🐍🎲 Snakes & Ladders — C# OOP Console Game  
+A fully object-oriented, event-driven implementation of the classic **Snakes & Ladders** game built using **C#**, showcasing clean architecture, encapsulation, inheritance, polymorphism, and robust board generation with exception handling.
+
+---
+## 📌 Game Overview
+
+This project recreates the traditional Snakes & Ladders board game using an extensible, maintainable, and fully OOP-driven architecture.
+
+It includes:
+
+✔ Random Snake / Ladder / Gold cell placement  
+✔ Dice-based movement  
+✔ Player swapping on Gold cells  
+✔ Event-driven UI updates  
+✔ Auto-regeneration of invalid boards  
+✔ SPACE key turn control  
+✔ Multi-player support  
+
+---
+## 🗂 Project Structure
+Ladders_and_snakes_game/
+│
+├── Program.cs
+│
+├── Core/
+│   ├── Board.cs
+│   ├── Cell.cs
+│   ├── EnumCellType.cs
+│   ├── EmptyCell.cs
+│   ├── GoldCell.cs
+│   ├── LadderLink.cs
+│   ├── SnakeLink.cs
+│   ├── TopOrBottomCell.cs
+│   └── BoardInitializationException.cs
+│
+├── Factory/
+│   └── CellsFactory.cs
+│
+├── Game_Logic/
+│   ├── GameManager.cs
+│   └── Dice.cs
+│
+├── Players/
+│   ├── IPlayer.cs
+│   └── Player.cs
+│
+├── Front/
+│   ├── UserInterface.cs
+│   └── UserInputValidation.cs
+│
+├── Utilities/
+│   └── RandomProvider.cs
+│
+└── Configuration/
+    └── GameSettings.cs
+---
+
 ## 📸 Gameplay Screenshots (Step-by-Step)
 
 Below is a complete walkthrough of the game flow with real console screenshots.
